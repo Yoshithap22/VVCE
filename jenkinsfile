@@ -1,0 +1,40 @@
+pipeline {
+    agent any
+
+    stages {
+
+        stage('Checkout') {
+            steps {
+                checkout scm
+            }
+        }
+
+        stage('Run Application') {
+            steps {
+                bat 'python app.py'
+            }
+        }
+
+        stage('Run Tests') {
+            steps {
+                bat 'python test.py'
+            }
+        }
+
+        stage('Build') {
+            steps {
+                echo 'Build completed successfully'
+            }
+        }
+    }
+
+    post {
+        success {
+            echo 'Jenkins Build Successful'
+        }
+
+        failure {
+            echo 'Jenkins Build Failed'
+        }
+    }
+}

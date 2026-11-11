@@ -1,46 +1,24 @@
 pipeline {
     agent any
+    triggers { githubPush() }
 
     stages {
-
         stage('Checkout') {
-            steps {
-                checkout scm
-            }
+            steps { checkout scm }
         }
-
-        stage('Check Python') {
-            steps {
-                bat 'python --version'
-                bat 'pip --version'
-            }
-        }
-
-        stage('Run Application') {
-            steps {
-                bat 'python app.py'
-            }
-        }
-
-        stage('Run Tests') {
-            steps {
-                bat 'python -m pytest'
-            }
-        }
-
         stage('Build') {
             steps {
-                echo 'Build Successful'
+                bat 'javac -version'
+                bat 'javac App.java AppTest.java'
             }
+        }
+        stage('Test') {
+            steps { bat 'java AppTest' }
         }
     }
 
     post {
-        success {
-            echo 'Jenkins Build Successful'
-        }
-        failure {
-            echo 'Jenkins Build Failed'
-        }
+        success { echo 'Build stable' }
+        failure { echo 'Build failed' }
     }
 }

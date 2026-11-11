@@ -9,6 +9,13 @@ pipeline {
             }
         }
 
+        stage('Check Python') {
+            steps {
+                bat 'python --version'
+                bat 'pip --version'
+            }
+        }
+
         stage('Run Application') {
             steps {
                 bat 'python app.py'
@@ -17,13 +24,13 @@ pipeline {
 
         stage('Run Tests') {
             steps {
-                bat 'python test.py'
+                bat 'python -m pytest'
             }
         }
 
         stage('Build') {
             steps {
-                echo 'Build completed successfully'
+                echo 'Build Successful'
             }
         }
     }
@@ -32,7 +39,6 @@ pipeline {
         success {
             echo 'Jenkins Build Successful'
         }
-
         failure {
             echo 'Jenkins Build Failed'
         }
